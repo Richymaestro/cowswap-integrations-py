@@ -30,7 +30,7 @@ class Order(EIP712Message):
     partiallyFillable: "bool" = False
     sellTokenBalance: "string" = "erc20"
     buyTokenBalance: "string" = "erc20"
-    signingScheme: "string" = "eip712"
+
 
     def sign(self):
         sig = w3.eth.account.sign_message(
@@ -42,6 +42,7 @@ class Order(EIP712Message):
     def set_json(self):
         order = self.body_data['message']
         order['signature'] = self.sign()
+        order['signingScheme'] = "eip712"
         # TODO - We shouldn't have to do this! maybe a method called "garnish"
         order['sellAmount'] = str(self.sellAmount)
         order['buyAmount'] = str(self.buyAmount)
